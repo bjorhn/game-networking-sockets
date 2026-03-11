@@ -1,8 +1,6 @@
 name: Build and Release GNS
 
 on:
-  push:
-    branches: [master]
   workflow_dispatch:
 
 concurrency:
@@ -66,6 +64,7 @@ jobs:
         with:
           name: gns-windows-x64
           path: artifacts/
+          retention-days: 1
           if-no-files-found: error
 
   build-linux:
@@ -112,6 +111,7 @@ jobs:
         with:
           name: gns-linux-x64
           path: gns-src/build/bin/libGameNetworkingSockets.so*
+          retention-days: 1
           if-no-files-found: error
 
   release:
