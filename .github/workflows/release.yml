@@ -10,9 +10,11 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  # Upstream GNS commit to build. Last tagged release (v1.4.1, June 2022) is incompatible
-  # with protobuf 5.x, so we track master instead. Update this hash to pull in new changes.
-  GNS_COMMIT: 517fff0cf6866ba163f4f016b0ef28f365c06c05
+  # Upstream GNS release to build. Pinned by commit hash rather than tag so the
+  # build can't change if the tag moves; GNS_VERSION is the tag the hash points to
+  # and is only used for labeling the release. Keep the two in sync when updating.
+  GNS_VERSION: v1.6.0
+  GNS_COMMIT: 2cb93a06350bb065db53abdb0d87cf297e0bfd34
 
 jobs:
   build-windows:
@@ -171,7 +173,7 @@ jobs:
         run: |
           gh release delete latest --yes --cleanup-tag --repo ${{ github.repository }} || true
           gh release create latest gns.zip --repo ${{ github.repository }} \
-            --title "Latest Build" \
-            --notes "Pre-built GameNetworkingSockets (commit ${{ env.GNS_COMMIT }}) binaries for Windows x64 and Linux x64."
+            --title "Latest Build (GNS ${{ env.GNS_VERSION }})" \
+            --notes "Pre-built GameNetworkingSockets ${{ env.GNS_VERSION }} (commit ${{ env.GNS_COMMIT }}) binaries for Windows x64 and Linux x64."
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
